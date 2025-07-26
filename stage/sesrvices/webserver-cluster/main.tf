@@ -2,15 +2,14 @@ provider "aws" {
   region = "us-east-2"
 }
 
-variable "server_port" {
-  description = "The port the server will use for HTTP requests"
-  type        = number
-  default     = 8080
-}
-
-output "alb_dns_name" {
-  value       = aws_lb.example.dns_name
-  description = "The domain name of the load balancer"
+terraform {
+  backend "s3" {
+    bucket         = "terraform-up-and-running-state-17961"
+    key            = "stage/services/webserver-cluster/terraform.tfstate"
+    region         = "us-east-2"
+    dynamodb_table = "terraform-up-and-running-locks"
+    encrypt        = true
+  }
 }
 
 locals {
